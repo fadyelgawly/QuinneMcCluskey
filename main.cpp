@@ -4,29 +4,26 @@
 #include <vector>
 using namespace std;
 
-struct Terms
-{
-	string binary; // 1010
+struct Terms {
+	string binary;
 	int decimal;
 	bool min = false;
 	int number_of_1;
 };
 
-Terms onesCounter(Terms t){                     //This function takes a Terms object and return Terms with updated variable number_of_1;
-    for (int i = 0; i < t.binary.size(); i++){
-        if (t.binary[i] == '1'){
-            t.number_of_1++;
+int onesCounter(string t){                     //This function takes a Terms object and return Terms with updated variable number_of_1;
+    int c = 0;
+    for (int i = 0; i < t.size(); i++){
+        if (t[i] == '1'){
+            c++;
         }
     }
-    
-    return t;
-    
+    return c;
 }
-
 void sortVector(vector<Terms>& minterm){// Will not work until number_of_1 has a true value
     Terms x;
     Terms y;
-    for (int i = 0; i < minterm.size(); i++){
+    for (int i = 0; i < minterm.size(); i++){ // O(n^2)
         for (int j = 0; j < minterm.size();j++){
             if (minterm[i].number_of_1 < minterm[j].number_of_1){
                 x = minterm[i];
@@ -37,7 +34,6 @@ void sortVector(vector<Terms>& minterm){// Will not work until number_of_1 has a
         }
     }
 }
-
 std::string decimalToBinaryString(int num, int numberOfVariables) {
 	std::string str;
 	int rem;
@@ -46,13 +42,12 @@ std::string decimalToBinaryString(int num, int numberOfVariables) {
 		num /= 2;
 		str.append(std::to_string(rem));
 	}
-
 	while (str.size()> numberOfVariables)   str = str.substr(1, str.size() - 1);
 	while (str.size()< numberOfVariables)   str.append(std::to_string(0));
 	std::reverse(str.begin(), str.end());
 	return str;
-
 }
+
 int Input(int variables, vector<Terms>& minterm)
 {
 	int totalTerms;
@@ -70,6 +65,7 @@ int Input(int variables, vector<Terms>& minterm)
 					process.min = true;
 					process.decimal = i;
 					process.binary = decimalToBinaryString(i, variables);
+                    process.number_of_1 = onesCounter(process.binary);
 					minterm.push_back(process);
 				
 			}
@@ -91,6 +87,7 @@ int Input(int variables, vector<Terms>& minterm)
 					process.min = false;
 					process.decimal = j;
 					process.binary = decimalToBinaryString(j, variables);
+                    process.number_of_1 = onesCounter(process.binary);
 					minterm.push_back(process);
 				}
 			}
