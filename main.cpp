@@ -4,14 +4,14 @@
 #include <vector>
 using namespace std;
 
-struct Terms {
-	string binary;
-	int decimal;
-	bool min = false;
-	int number_of_1;
+struct term {
+	string  binary;
+	int     decimal;
+	bool    min = false;
+	int     ones;
 };
 
-int onesCounter(string t){                     //This function takes a Terms object and return Terms with updated variable number_of_1;
+int onesCounter(string t){                     //This function takes a term object and return term with updated variable ones;
     int c = 0;
     for (int i = 0; i < t.size(); i++){
         if (t[i] == '1'){
@@ -20,12 +20,12 @@ int onesCounter(string t){                     //This function takes a Terms obj
     }
     return c;
 }
-void sortVector(vector<Terms>& minterm){// Will not work until number_of_1 has a true value
-    Terms x;
-    Terms y;
+void sortVector(vector<term>& minterm){// Will not work until ones has a true value
+    term x;
+    term y;
     for (int i = 0; i < minterm.size(); i++){ // O(n^2)
         for (int j = 0; j < minterm.size();j++){
-            if (minterm[i].number_of_1 < minterm[j].number_of_1){
+            if (minterm[i].ones < minterm[j].ones){
                 x = minterm[i];
                 y = minterm[j];
                 minterm[i] = y;
@@ -48,11 +48,11 @@ std::string decimalToBinaryString(int num, int numberOfVariables) {
 	return str;
 }
 
-int Input(int variables, vector<Terms>& minterm)
+int Input(int variables, vector<term>& minterm)
 {
 	int totalTerms;
 	int total = pow(2, variables);
-	Terms process;
+	term process;
 	/*------------------------------Minterms Entery-------------------------------*/
 
 	cout << "Choose the minterms between 0  and " << total - 1 << endl << " When done press -1" << endl;
@@ -65,7 +65,7 @@ int Input(int variables, vector<Terms>& minterm)
 					process.min = true;
 					process.decimal = i;
 					process.binary = decimalToBinaryString(i, variables);
-                    process.number_of_1 = onesCounter(process.binary);
+                    process.ones = onesCounter(process.binary);
 					minterm.push_back(process);
 				
 			}
@@ -87,7 +87,7 @@ int Input(int variables, vector<Terms>& minterm)
 					process.min = false;
 					process.decimal = j;
 					process.binary = decimalToBinaryString(j, variables);
-                    process.number_of_1 = onesCounter(process.binary);
+                    process.ones = onesCounter(process.binary);
 					minterm.push_back(process);
 				}
 			}
@@ -100,7 +100,7 @@ int Input(int variables, vector<Terms>& minterm)
 
 }
 
-void Print(int total, vector<Terms>& minterm)
+void Print(int total, vector<term>& minterm)
 {
 
 	for (int i = 0; i < total; i++){
@@ -112,7 +112,7 @@ void Print(int total, vector<Terms>& minterm)
 int main()
 {
 	int variables, totalTerms;
-	vector<Terms> minterm;
+	vector<term> minterm;
     cout << "Enter Number of variables: ";
 	cin >> variables;
     
