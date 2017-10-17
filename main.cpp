@@ -23,6 +23,21 @@ Terms onesCounter(Terms t){                     //This function takes a Terms ob
     
 }
 
+void sortVector(vector<Terms>& minterm){// Will not work until number_of_1 has a true value
+    Terms x;
+    Terms y;
+    for (int i = 0; i < minterm.size(); i++){
+        for (int j = 0; j < minterm.size();j++){
+            if (minterm[i].number_of_1 < minterm[j].number_of_1){
+                x = minterm[i];
+                y = minterm[j];
+                minterm[i] = y;
+                minterm[j] = x;
+            }
+        }
+    }
+}
+
 std::string decimalToBinaryString(int num, int numberOfVariables) {
 	std::string str;
 	int rem;
@@ -91,12 +106,8 @@ int Input(int variables, vector<Terms>& minterm)
 void Print(int total, vector<Terms>& minterm)
 {
 
-	for (int i = 0; i < total; i++)
-	{
-		if (minterm[i].min == true)
-			cout << "m" << minterm[i].decimal << " = " << minterm[i].binary << endl;
-		else
-			cout << "D" << minterm[i].decimal << " = " << minterm[i].binary << endl;
+	for (int i = 0; i < total; i++){
+        cout << (minterm[i].min? "m": "D") << minterm[i].decimal << " = " << minterm[i].binary << endl;
 	}
 }
 
@@ -105,9 +116,13 @@ int main()
 {
 	int variables, totalTerms;
 	vector<Terms> minterm;
-	cout << "Enter Number of variables" << endl;
+    cout << "Enter Number of variables: ";
 	cin >> variables;
+    
 	totalTerms = Input(variables, minterm); //User input
+
+    sortVector(minterm);
+    
 	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
 
 	system("pause");
