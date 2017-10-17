@@ -12,6 +12,17 @@ struct Terms
 	int number_of_1;
 };
 
+Terms onesCounter(Terms t){                     //This function takes a Terms object and return Terms with updated variable number_of_1;
+    for (int i = 0; i < t.binary.size(); i++){
+        if (t.binary[i] == '1'){
+            t.number_of_1++;
+        }
+    }
+    
+    return t;
+    
+}
+
 std::string decimalToBinaryString(int num, int numberOfVariables) {
 	std::string str;
 	int rem;
