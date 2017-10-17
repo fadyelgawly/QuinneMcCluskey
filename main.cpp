@@ -122,7 +122,10 @@ int main()
     
 	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
 
-	system("pause");
+#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__ 
+    system("pause");
+#endif
+	
     
     return 0;
 }
