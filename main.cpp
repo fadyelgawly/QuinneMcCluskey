@@ -83,7 +83,7 @@ int Input(int variables, vector<Terms> minterm)
             
         }
     }
-    return totalTerms = minterm.size();
+    return totalTerms = int(minterm.size());
     
 }
 
