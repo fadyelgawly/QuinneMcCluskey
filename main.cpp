@@ -110,20 +110,31 @@ void Print(int total, vector<term>& minterm)
 	}
 }
 
-void Adjacency(vector<term> &minterm, int variables,int total)//Takes the Vector, check adjacency
-{
-	vector<term>A;
-	vector<term>B;
-	term process;
-	for (int i = 0; i < variables - 1; i++)
-	{
-		for (int j = 0; j < total; j++)
-			if (minterm[j].ones == i)
-				A.push_back = minterm[j].decimal;
-			else if (minterm[j].ones == i + 1)
-				B.push_back = minterm[j].decimal;
-	}
+//void Adjacency(vector<term> &minterm, int variables,int total)//Takes the Vector, check adjacency
+//{
+//    vector<term>A;
+//    vector<term>B;
+//    term process;
+//    for (int i = 0; i < variables - 1; i++)
+//    {
+//        for (int j = 0; j < total; j++)
+//            if (minterm[j].ones == i)
+//                A.push_back = minterm[j].decimal;
+//            else if (minterm[j].ones == i + 1)
+//                B.push_back = minterm[j].decimal;
+//    }
+//}
+
+bool checkAdjacency(term t1, term t2){
+    int c = 0;
+    for (int i = 0; i< t1.binary.size(); i++){
+        if (t1.binary[i] != t2.binary[i]){  //0001
+            c++;                            //0000
+        }
+    }
+    return (c == 1);
 }
+
 int main()
 {
 	int variables=0, totalTerms;
@@ -146,8 +157,7 @@ int main()
     
     
     
-#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__ 
-
+#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__
     system("pause");
 #endif
 	
