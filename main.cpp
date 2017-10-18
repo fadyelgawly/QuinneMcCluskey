@@ -11,7 +11,7 @@ struct term {
 	int     ones;
 };
 
-int onesCounter(string t){                     //This function takes a term object and return term with updated variable ones;
+int onesCounter(string t){    //This function takes a term object and return term with updated variable ones;
     int c = 0;
     for (int i = 0; i < t.size(); i++){
         if (t[i] == '1'){
@@ -110,41 +110,65 @@ void Print(int total, vector<term>& minterm)
 	}
 }
 
+void printVector(vector<term> &x)//For testing ONLY
+{
+	cout << "Vector Size = " << x.size() << endl;
+	for (int i = 0; i < x.size(); i++)
+	{
+	//	cout << "Decimal: " << x[i].decimal << endl;
+		cout << "Binary:" << x[i].binary << endl;
+	//	cout << "Number of ones:" << x[i].ones << endl;
+	//	cout << "Minterm: " << x[i].min << endl;
+		//cout << "" <<  << endl;
+	}
+}
 void Adjacency(vector<term> &minterm, int variables,int total)//Takes the Vector, check adjacency
 {
 	vector<term>A;
 	vector<term>B;
-	term process;
-	for (int i = 0; i < variables - 1; i++)
+	for (int i = 0; i < variables; i++)
 	{
 		for (int j = 0; j < total; j++)
+		{
 			if (minterm[j].ones == i)
-				A.push_back = minterm[j].decimal;
+				A.push_back(minterm[j]) ; //Not Changing the Minterm
 			else if (minterm[j].ones == i + 1)
-				B.push_back = minterm[j].decimal;
+				B.push_back(minterm[j]);
+		}
+		cout << "___________________________________" << endl;
+		//cout << "Minterm Vector:-" << endl;
+		//printVector(minterm);
+		cout << "___________________________________" << endl;
+		cout << "A Vector:-" << endl;
+		printVector(A);
+		cout << "___________________________________" << endl;
+		cout << "B Vector:-" << endl;
+		printVector(B);
+		cout << "___________________________________" << endl;
+		A.clear();
+		B.clear();
 	}
+
+	
+	
 }
+
 int main()
 {
-	int variables=0, totalTerms;
+	int variables, totalTerms;
 	vector<term> minterm;
-	while (variables>0 && variables<16)
-	{
-		cout << "Enter Number of variables between 1 and 16: ";
-		cin >> variables;
-	}
-    
+	cin >> variables;
 	totalTerms = Input(variables, minterm); //User input
-
+	
     sortVector(minterm);
-    
+
 	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
 
-	//Ajacencey(minterm, variables,totalTerms);
+	Adjacency(minterm, variables,totalTerms);
 
-#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__ 
+//#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__ 
     system("pause");
-#endif
+//#endif
 	
     
     return 0;
