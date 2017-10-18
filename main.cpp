@@ -57,7 +57,7 @@ int Input(int variables, vector<term>& minterm) //User input and validation
 	term process;
 	/*------------------------------Minterms Entery-------------------------------*/
 
-	cout << "Choose the minterms between 0  and " << total - 1 << endl << " When done press -1" << endl;
+    cout << "Choose the minterms between 0  and " << total - 1 <<  " and enter -1 to end" << endl;
 	int i = 0;
 	while (i != -1)
 	{
@@ -110,6 +110,7 @@ void Print(int total, vector<term>& minterm)
 	}
 }
 
+<<<<<<< HEAD
 void printVector(vector<term> &x)//For testing ONLY
 {
 	cout << "Vector Size = " << x.size() << endl;
@@ -151,6 +152,31 @@ void Adjacency(vector<term> &minterm, int variables,int total)//Takes the Vector
 
 	
 	
+=======
+//void Adjacency(vector<term> &minterm, int variables,int total)//Takes the Vector, check adjacency
+//{
+//    vector<term>A;
+//    vector<term>B;
+//    term process;
+//    for (int i = 0; i < variables - 1; i++)
+//    {
+//        for (int j = 0; j < total; j++)
+//            if (minterm[j].ones == i)
+//                A.push_back = minterm[j].decimal;
+//            else if (minterm[j].ones == i + 1)
+//                B.push_back = minterm[j].decimal;
+//    }
+//}
+
+bool checkAdjacency(term t1, term t2){
+    int c = 0;
+    for (int i = 0; i< t1.binary.size(); i++){
+        if (t1.binary[i] != t2.binary[i]){  //0001
+            c++;                            //0000
+        }
+    }
+    return (c == 1);
+>>>>>>> ee0a1d85f8e2994b8c7bfb8fd5c1c5af1fed682d
 }
 
 int main()
@@ -164,9 +190,19 @@ int main()
 
 	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
 
+<<<<<<< HEAD
 	Adjacency(minterm, variables,totalTerms);
 
 //#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__ 
+=======
+
+	//Ajacencey(minterm, variables,totalTerms);
+
+    
+    
+    
+#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__
+>>>>>>> ee0a1d85f8e2994b8c7bfb8fd5c1c5af1fed682d
     system("pause");
 //#endif
 	
