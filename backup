@@ -3,8 +3,13 @@
 #include <cmath>
 #include <vector>
 using namespace std;
-#include "term.cpp"
 
+struct term {
+	string  binary;
+	int     decimal;
+	bool    min = false;
+	int     ones;
+};
 int onesCounter(string t){                     //This function takes a term object and return term with updated variable ones;
     int c = 0;
     for (int i = 0; i < t.size(); i++){
@@ -98,7 +103,7 @@ void Print(int total, vector<term>& minterm)
 {
 
 	for (int i = 0; i < total; i++){
-        cout << (minterm[i].isMinTerm()? "m": "D") << minterm[i].getDecimal() << " = " << minterm[i].getBinary() << endl;
+        cout << (minterm[i].min? "m": "D") << minterm[i].decimal << " = " << minterm[i].binary << endl;
 	}
 }
 
@@ -156,3 +161,4 @@ int main()
     
     return 0;
 }
+
