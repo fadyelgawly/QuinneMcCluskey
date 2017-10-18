@@ -55,7 +55,7 @@ int Input(int variables, vector<term>& minterm)
 	term process;
 	/*------------------------------Minterms Entery-------------------------------*/
 
-	cout << "Choose the minterms between 0  and " << total - 1 << endl << " When done press -1" << endl;
+    cout << "Choose the minterms between 0  and " << total - 1 <<  " and enter -1 to end" << endl;
 	int i = 0;
 	while (i != -1)
 	{
@@ -122,7 +122,7 @@ int main()
     
 	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
 
-#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__ 
+#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__
     system("pause");
 #endif
 	
