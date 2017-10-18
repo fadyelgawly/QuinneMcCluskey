@@ -20,6 +20,7 @@ int onesCounter(string t){                     //This function takes a term obje
     }
     return c;
 }
+
 void sortVector(vector<term>& minterm){// Will not work until ones has a true value
     term x;
     term y;
@@ -34,7 +35,8 @@ void sortVector(vector<term>& minterm){// Will not work until ones has a true va
         }
     }
 }
-std::string decimalToBinaryString(int num, int numberOfVariables) {
+
+std::string decimalToBinaryString(int num, int numberOfVariables) { //Convert from Decimal to binary with the correct number of added zeros on the left
 	std::string str;
 	int rem;
 	while(num > 0){
@@ -44,11 +46,11 @@ std::string decimalToBinaryString(int num, int numberOfVariables) {
 	}
 	while (str.size()> numberOfVariables)   str = str.substr(1, str.size() - 1);
 	while (str.size()< numberOfVariables)   str.append(std::to_string(0));
-	std::reverse(str.begin(), str.end());
+	std::reverse(str.begin(), str.end()); //Reverse the string 1000 = 0001
 	return str;
 }
 
-int Input(int variables, vector<term>& minterm)
+int Input(int variables, vector<term>& minterm) //User input and validation
 {
 	int totalTerms;
 	int total = pow(2, variables);
@@ -108,13 +110,29 @@ void Print(int total, vector<term>& minterm)
 	}
 }
 
-
+void Adjacency(vector<term> &minterm, int variables,int total)//Takes the Vector, check adjacency
+{
+	vector<term>A;
+	vector<term>B;
+	term process;
+	for (int i = 0; i < variables - 1; i++)
+	{
+		for (int j = 0; j < total; j++)
+			if (minterm[j].ones == i)
+				A.push_back = minterm[j].decimal;
+			else if (minterm[j].ones == i + 1)
+				B.push_back = minterm[j].decimal;
+	}
+}
 int main()
 {
-	int variables, totalTerms;
+	int variables=0, totalTerms;
 	vector<term> minterm;
-    cout << "Enter Number of variables: ";
-	cin >> variables;
+	while (variables>0 && variables<16)
+	{
+		cout << "Enter Number of variables between 1 and 16: ";
+		cin >> variables;
+	}
     
 	totalTerms = Input(variables, minterm); //User input
 
@@ -122,7 +140,14 @@ int main()
     
 	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
 
-#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__
+
+	//Ajacencey(minterm, variables,totalTerms);
+
+    
+    
+    
+#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__ 
+
     system("pause");
 #endif
 	
