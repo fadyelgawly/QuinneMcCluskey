@@ -60,10 +60,11 @@ term combineTerms (term t1, term t2){
     term temp;
     
     for (int i = 0; i< t1.binary.size(); i++){
-        if (t1.binary[i] == t2.binary[i]){  //0001
-            temp.binary.append(std::to_string(t1.binary[i]));
+        if (t1.binary[i] == t2.binary[i]){
+            //0001
+            temp.binary.append(t1.binary.substr(i,1));
         } else{
-            temp.binary.append(std::to_string('x'));
+            temp.binary.append("x");
         }
     }
     
@@ -173,7 +174,7 @@ void Adjacency(vector<term> &minterm, int variables, int total)//Takes the Vecto
 				B.push_back(minterm[j]);
 		}
 		vector <term> AB;
-		//AB = combineTwoVectors(A, B); need this
+		AB = combineTwoVectors(A, B);
 		for (int i = 0; i < AB.size(); i++)
 			prime.push_back(AB[i]);
 
@@ -182,11 +183,11 @@ void Adjacency(vector<term> &minterm, int variables, int total)//Takes the Vecto
 		//cout << "Minterm Vector:-" << endl;
 		//printVector(minterm);
 		cout << "___________________________________" << endl;
-		cout << "A Vector:-" << endl;
-		printVector(A);
+		cout << "AB Vector:-" << endl;
+		printVector(AB);
 		cout << "___________________________________" << endl;
 		cout << "B Vector:-" << endl;
-		printVector(B);
+		printVector(prime);
 		cout << "___________________________________" << endl;
 		A.clear();
 		B.clear();
