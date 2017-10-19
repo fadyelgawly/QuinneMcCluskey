@@ -9,6 +9,9 @@ struct term {
 	int     decimal;
 	bool    min = false;
 	int     ones;
+    bool operator==(const term &t){return (binary == t.binary);}
+ 
+    
 };
 
 int onesCounter(string t) {    //This function takes a term object and return term with updated variable ones;
@@ -20,7 +23,29 @@ int onesCounter(string t) {    //This function takes a term object and return te
 	}
 	return c;
 }
-void sortVector(vector<term>& minterm) {// Will not work until ones has a true value
+void sortVectorAccordingToBinary(vector<term>& minterm) {
+    term x;
+    term y;
+    for (int i = 0; i < minterm.size(); i++) { // O(n^2)
+        for (int j = 0; j < minterm.size(); j++) {
+            if (minterm[i].binary < minterm[j].binary) {
+                x = minterm[i];
+                y = minterm[j];
+                minterm[i] = y;
+                minterm[j] = x;
+            }
+        }
+    }
+}
+void removeDuplicates(vector<term> &vec){
+    sortVectorAccordingToBinary(vec);
+    for (int i = 0;i < vec.size() -1;i++){
+        if (vec[i] == vec[i + 1]){
+            vec.erase(vec.begin() + i);
+        }
+    }
+}
+void sortVectorAccordingToNumberOfOnes(vector<term>& minterm) {// Will not work until ones has a true value
 	term x;
 	term y;
 	for (int i = 0; i < minterm.size(); i++) { // O(n^2)
@@ -34,6 +59,7 @@ void sortVector(vector<term>& minterm) {// Will not work until ones has a true v
 		}
 	}
 }
+
 std::string decimalToBinaryString(int num, int numberOfVariables) { //Convert from Decimal to binary with the correct number of added zeros on the left
 	std::string str;
 	int rem;
@@ -205,7 +231,7 @@ int main()
 	cin >> variables;
 
 	totalTerms = Input(variables, minterm); //User input
-	sortVector(minterm);
+	sortVectorAccordingToNumberOfOnes(minterm);
 	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
 	PrimeImplicants = Adjacency(minterm, variables); //First call i have to call the user given
 
