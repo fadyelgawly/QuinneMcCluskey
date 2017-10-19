@@ -165,6 +165,10 @@ vector<term> Adjacency(vector<term> minterm, int variables)//Takes the Vector, c
 	vector<term>A;
 	vector<term>B;
 	vector<term>prime;
+
+	for (int i = 0; i < minterm.size(); i++)	// count binnary in the new implicants
+		minterm[i].ones = onesCounter(minterm[i].binary);
+
 	for (int i = 0; i < variables; i++)
 	{
 		for (int j = 0; j < minterm.size(); j++)
