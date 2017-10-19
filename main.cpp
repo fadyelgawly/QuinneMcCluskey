@@ -67,7 +67,7 @@ term combineTerms (term t1, term t2){
             temp.binary.append("x");
         }
     }
-    
+
     
     return temp;
 }
@@ -90,8 +90,7 @@ int Input(int variables, vector<term>& minterm) //User input and validation
 	int totalTerms;
 	int total = pow(2, variables);
 	term process;
-	/*------------------------------Minterms Entery-------------------------------*/
-
+	
     cout << "Choose the minterms between 0  and " << total - 1 <<  " and enter -1 to end" << endl;
 	int i = 0;
 	while (i != -1)
@@ -107,7 +106,7 @@ int Input(int variables, vector<term>& minterm) //User input and validation
 				
 			}
             else {
-                cout << "out of boundries try again" << endl;
+                cout << "Please try again" << endl;
             }
         }
 	}
@@ -129,33 +128,17 @@ int Input(int variables, vector<term>& minterm) //User input and validation
 				}
 			}
             else {
-                cout << "out of boundries try again" << endl;
+                cout << "Please try again" << endl;
             }
         }
 	}
 	return totalTerms = int(minterm.size());
 
 }
-
-void Print(int total, vector<term>& minterm)
-{
-
-	for (int i = 0; i < total; i++){
-        cout << (minterm[i].min? "m": "D") << minterm[i].decimal << " = " << minterm[i].binary << endl;
-	}
-}
-
-void printVector(vector<term> &x)//For testing ONLY
-{
+void printVector(vector<term> &x){
 	cout << "Vector Size = " << x.size() << endl;
 	for (int i = 0; i < x.size(); i++)
-	{
-	//	cout << "Decimal: " << x[i].decimal << endl;
-		cout << "Binary:" << x[i].binary << endl;
-	//	cout << "Number of ones:" << x[i].ones << endl;
-	//	cout << "Minterm: " << x[i].min << endl;
-		//cout << "" <<  << endl;
-	}
+	cout << "0b" << x[i].binary << endl;
 }
 
 
@@ -164,6 +147,7 @@ void Adjacency(vector<term> &minterm, int variables, int total)//Takes the Vecto
 	vector<term>A;
 	vector<term>B;
 	vector<term>prime;
+    
 	for (int i = 0; i < variables; i++)
 	{
 		for (int j = 0; j < minterm.size()-1; j++)
@@ -179,18 +163,16 @@ void Adjacency(vector<term> &minterm, int variables, int total)//Takes the Vecto
 			prime.push_back(AB[i]);
 
 
-		cout << "___________________________________" << endl;
-		//cout << "Minterm Vector:-" << endl;
-		//printVector(minterm);
-		cout << "___________________________________" << endl;
-		cout << "AB Vector:-" << endl;
-		printVector(AB);
-		cout << "___________________________________" << endl;
-		cout << "B Vector:-" << endl;
-		printVector(prime);
-		cout << "___________________________________" << endl;
-		A.clear();
-		B.clear();
+
+//            cout << "___________________________________" << endl;
+//            cout << "AB Vector:-" << endl;
+//            printVector(AB);
+//            cout << "___________________________________" << endl;
+//            cout << "prime Vector:-" << endl;
+//            printVector(prime);
+//            cout << "___________________________________" << endl;
+            A.clear();
+            B.clear();
 	}
 }
 
@@ -199,6 +181,8 @@ void Adjacency(vector<term> &minterm, int variables, int total)//Takes the Vecto
 
 int main()
 {
+    
+    
 	int variables, totalTerms;
 	vector<term> minterm;
     cout << "Please enter how much variables does your function have: ";
@@ -207,7 +191,7 @@ int main()
 	totalTerms = Input(variables, minterm); //User input
 
     sortVector(minterm);
-	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
+    for (int i = 0; i < minterm.size(); i++) cout << (minterm[i].min? "m": "D") << minterm[i].decimal << " = " << minterm[i].binary << endl;
 	Adjacency(minterm, variables,totalTerms);
 
     system("pause");
