@@ -9,6 +9,7 @@ struct term {
 	int     decimal;
 	bool    min = false;
 	int     ones;
+
 };
 
 int onesCounter(string t) {    //This function takes a term object and return term with updated variable ones;
@@ -20,6 +21,7 @@ int onesCounter(string t) {    //This function takes a term object and return te
 	}
 	return c;
 }
+
 void sortVector(vector<term>& minterm) {// Will not work until ones has a true value
 	term x;
 	term y;
@@ -34,6 +36,7 @@ void sortVector(vector<term>& minterm) {// Will not work until ones has a true v
 		}
 	}
 }
+
 std::string decimalToBinaryString(int num, int numberOfVariables) { //Convert from Decimal to binary with the correct number of added zeros on the left
 	std::string str;
 	int rem;
@@ -47,6 +50,7 @@ std::string decimalToBinaryString(int num, int numberOfVariables) { //Convert fr
 	std::reverse(str.begin(), str.end()); //Reverse the string 1000 = 0001
 	return str;
 }
+
 bool checkAdjacency(term t1, term t2) {
 	int c = 0;
 	for (int i = 0; i< t1.binary.size(); i++) {
@@ -56,6 +60,7 @@ bool checkAdjacency(term t1, term t2) {
 	}
 	return (c == 1);
 }
+
 term combineTerms(term t1, term t2) {
 	term temp;
 
@@ -72,6 +77,7 @@ term combineTerms(term t1, term t2) {
 
 	return temp;
 }
+
 vector<term> combineTwoVectors(vector<term>& A, vector<term>& B) {
 	vector<term> C;
 	term temp;
@@ -159,7 +165,6 @@ void printVector(vector<term> &x)//For testing ONLY
 	}
 }
 
-
 vector<term> Adjacency(vector<term> minterm, int variables)//Takes the Vector, check adjacency
 {
 	vector<term>A;
@@ -183,18 +188,12 @@ vector<term> Adjacency(vector<term> minterm, int variables)//Takes the Vector, c
 		for (int i = 0; i < AB.size(); i++)
 			prime.push_back(AB[i]);
 
-		//	cout << "______________AB Vector________________" << endl;
-		//	printVector(AB);
 		A.clear();
 		B.clear();
 	}
-	cout << "______________Prime Vector________________" << endl;
 	printVector(prime);
 	return prime;
 }
-
-
-
 
 int main()
 {
@@ -211,6 +210,8 @@ int main()
 
 	for (int i = 0; i<variables - 2; i++)	//Any other time I call my PrimeImplicants and work on it
 		PrimeImplicants = Adjacency(PrimeImplicants, variables);
+
+	printVector(PrimeImplicants);
 
 	system("pause");
 
