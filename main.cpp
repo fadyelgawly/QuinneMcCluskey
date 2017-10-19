@@ -124,7 +124,7 @@ void printVector(vector<term> &x)//For testing ONLY
 }
 
 
-void Adjacency(vector<term> &minterm, int variables, int total)//Takes the Vector, check adjacency
+vector<term> Adjacency(vector<term> &minterm, int variables)//Takes the Vector, check adjacency
 {
 	vector<term>A;
 	vector<term>B;
@@ -143,20 +143,12 @@ void Adjacency(vector<term> &minterm, int variables, int total)//Takes the Vecto
 		for (int i = 0; i < AB.size(); i++)
 			prime.push_back(AB[i]);
 
-
-		cout << "___________________________________" << endl;
-		//cout << "Minterm Vector:-" << endl;
-		//printVector(minterm);
-		cout << "___________________________________" << endl;
-		cout << "A Vector:-" << endl;
-		printVector(A);
-		cout << "___________________________________" << endl;
-		cout << "B Vector:-" << endl;
-		printVector(B);
-		cout << "___________________________________" << endl;
 		A.clear();
 		B.clear();
 	}
+	cout << "______________Prime Vector________________" << endl;
+	printVector(prime);
+	return prime;
 }
 
 
@@ -174,6 +166,8 @@ int main()
 {
 	int variables, totalTerms;
 	vector<term> minterm;
+	vector<term> PrimeImplicants;
+
 	cin >> variables;
 	totalTerms = Input(variables, minterm); //User input
 	
@@ -181,7 +175,10 @@ int main()
 
 	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
 
-	Adjacency(minterm, variables,totalTerms);
+	PrimeImplicants = Adjacency(minterm, variables); //First call i have to call the user given
+		
+for(int i=0; i<variables-1 ;i++)	//Any other time I call my PrimeImplicants and work on it
+	PrimeImplicants =	Adjacency(PrimeImplicants, variables);
 
     
     system("pause");
