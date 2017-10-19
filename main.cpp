@@ -156,19 +156,28 @@ void printVector(vector<term> &x)//For testing ONLY
 		//cout << "" <<  << endl;
 	}
 }
+
+
 void Adjacency(vector<term> &minterm, int variables, int total)//Takes the Vector, check adjacency
 {
 	vector<term>A;
 	vector<term>B;
+	vector<term>prime;
 	for (int i = 0; i < variables; i++)
 	{
-		for (int j = 0; j < total; j++)
+		for (int j = 0; j < minterm.size()-1; j++)
 		{
 			if (minterm[j].ones == i)
 				A.push_back(minterm[j]); //Not Changing the Minterm
 			else if (minterm[j].ones == i + 1)
 				B.push_back(minterm[j]);
 		}
+		vector <term> AB;
+		//AB = combineTwoVectors(A, B); need this
+		for (int i = 0; i < AB.size(); i++)
+			prime.push_back(AB[i]);
+
+
 		cout << "___________________________________" << endl;
 		//cout << "Minterm Vector:-" << endl;
 		//printVector(minterm);
@@ -183,6 +192,7 @@ void Adjacency(vector<term> &minterm, int variables, int total)//Takes the Vecto
 		B.clear();
 	}
 }
+
 
 
 
@@ -203,3 +213,4 @@ int main()
     
     return 0;
 }
+
