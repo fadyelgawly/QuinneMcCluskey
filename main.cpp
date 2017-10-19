@@ -142,7 +142,7 @@ void printVector(vector<term> &x){
 }
 
 
-void Adjacency(vector<term> &minterm, int variables, int total)//Takes the Vector, check adjacency
+vector<term> Adjacency(vector<term> & minterm, int variables)//Takes the Vector, check adjacency
 {
 	vector<term>A;
 	vector<term>B;
@@ -150,7 +150,7 @@ void Adjacency(vector<term> &minterm, int variables, int total)//Takes the Vecto
     
 	for (int i = 0; i < variables; i++)
 	{
-		for (int j = 0; j < minterm.size()-1; j++)
+		for (int j = 0; j < minterm.size(); j++)
 		{
 			if (minterm[j].ones == i)
 				A.push_back(minterm[j]); //Not Changing the Minterm
@@ -164,16 +164,26 @@ void Adjacency(vector<term> &minterm, int variables, int total)//Takes the Vecto
 
 
 
-//            cout << "___________________________________" << endl;
-//            cout << "AB Vector:-" << endl;
-//            printVector(AB);
-//            cout << "___________________________________" << endl;
-//            cout << "prime Vector:-" << endl;
-//            printVector(prime);
-//            cout << "___________________________________" << endl;
+            cout << "___________________________________" << endl;
+            cout << "AB Vector:-" << endl;
+            printVector(AB);
+            cout << "___________________________________" << endl;
+            cout << "prime Vector:-" << endl;
+            printVector(prime);
+            cout << "___________________________________" << endl;
             A.clear();
             B.clear();
+
+		
+		cout << "______________AB Vector________________" << endl;
+		printVector(AB);
+		A.clear();
+		B.clear();
+
 	}
+	cout << "______________Prime Vector________________" << endl;
+	printVector(prime);
+	return prime;
 }
 
 
@@ -185,17 +195,33 @@ int main()
     
 	int variables, totalTerms;
 	vector<term> minterm;
+
+	vector<term> PrimeImplicants;
+
     cout << "Please enter how much variables does your function have: ";
+
+
 	cin >> variables;
     
 	totalTerms = Input(variables, minterm); //User input
 
     sortVector(minterm);
+
     for (int i = 0; i < minterm.size(); i++) cout << (minterm[i].min? "m": "D") << minterm[i].decimal << " = " << minterm[i].binary << endl;
-	Adjacency(minterm, variables,totalTerms);
+    
+	Adjacency(minterm, variables);
+
+
+
+
+PrimeImplicants = Adjacency(minterm, variables); //First call i have to call the user given
+	
+for(int i=0; i<variables-1 ;i++)	//Any other time I call my PrimeImplicants and work on it
+	PrimeImplicants =	Adjacency(PrimeImplicants, variables);
+
 
     system("pause");
-    
+  
     return 0;
 }
 
