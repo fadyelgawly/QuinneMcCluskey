@@ -88,8 +88,18 @@ bool checkAdjacency(term t1, term t2) {
 
 term combineTerms(term t1, term t2) {
 	term temp;
-	temp.track.push_back(t1.decimal);
-	temp.track.push_back(t2.decimal);
+
+	
+	for (int i = 0; i < t1.track.size(); i++)
+	{
+		if (i == 0)
+		{
+			temp.track.push_back(t1.decimal);
+			temp.track.push_back(t2.decimal);
+		}
+		temp.track.push_back(t1.track[i]);
+		temp.track.push_back(t2.track[i]);
+	}
 	for (int i = 0; i< t1.binary.size(); i++) {
 		if (t1.binary[i] == t2.binary[i]) {
 			
