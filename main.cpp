@@ -20,7 +20,6 @@ int onesCounter(string t){    //This function takes a term object and return ter
     }
     return c;
 }
-
 void sortVector(vector<term>& minterm){// Will not work until ones has a true value
     term x;
     term y;
@@ -35,7 +34,6 @@ void sortVector(vector<term>& minterm){// Will not work until ones has a true va
         }
     }
 }
-
 std::string decimalToBinaryString(int num, int numberOfVariables) { //Convert from Decimal to binary with the correct number of added zeros on the left
 	std::string str;
 	int rem;
@@ -48,6 +46,42 @@ std::string decimalToBinaryString(int num, int numberOfVariables) { //Convert fr
 	while (str.size()< numberOfVariables)   str.append(std::to_string(0));
 	std::reverse(str.begin(), str.end()); //Reverse the string 1000 = 0001
 	return str;
+}
+bool checkAdjacency(term t1, term t2){
+    int c = 0;
+    for (int i = 0; i< t1.binary.size(); i++){
+        if (t1.binary[i] != t2.binary[i]){  //0001
+            c++;                            //0000
+        }
+    }
+    return (c == 1);
+}
+term combineTerms (term t1, term t2){
+    term temp;
+    
+    for (int i = 0; i< t1.binary.size(); i++){
+        if (t1.binary[i] == t2.binary[i]){  //0001
+            temp.binary.append(std::to_string(t1.binary[i]));
+        } else{
+            temp.binary.append(std::to_string('x'));
+        }
+    }
+    
+    
+    return temp;
+}
+vector<term> combineTwoVectors (vector<term>& A,vector<term>& B){
+    vector<term> C;
+    term temp;
+    for (int i = 0; i < A.size(); i++){
+        for (int j = 0; j < B.size(); j++){
+            if (checkAdjacency(A[i], B[j])){
+                temp = combineTerms(A[i], B[j]);        //FLAGS CAN BE ADDED HERE
+                C.push_back(temp);
+            }
+        }
+    }
+    return C;
 }
 
 int Input(int variables, vector<term>& minterm) //User input and validation
@@ -151,44 +185,21 @@ void Adjacency(vector<term> &minterm, int variables, int total)//Takes the Vecto
 }
 
 
-bool checkAdjacency(term t1, term t2){
-    int c = 0;
-    for (int i = 0; i< t1.binary.size(); i++){
-        if (t1.binary[i] != t2.binary[i]){  //0001
-            c++;                            //0000
-        }
-    }
-    return (c == 1);
-//>>>>>>> ee0a1d85f8e2994b8c7bfb8fd5c1c5af1fed682d
-}
 
 int main()
 {
 	int variables, totalTerms;
 	vector<term> minterm;
+    cout << "Please enter how much variables does your function have: ";
 	cin >> variables;
+    
 	totalTerms = Input(variables, minterm); //User input
-	
+
     sortVector(minterm);
-
 	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
-
-//<<<<<<< HEAD
 	Adjacency(minterm, variables,totalTerms);
 
-//#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__ 
-//=======
-
-	//Ajacencey(minterm, variables,totalTerms);
-
-    
-    
-    
-//#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__
-//>>>>>>> ee0a1d85f8e2994b8c7bfb8fd5c1c5af1fed682d
     system("pause");
-//#endif
-	
     
-   // return 0;
+    return 0;
 }
