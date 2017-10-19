@@ -6,16 +6,12 @@ using namespace std;
 
 struct term {
 	string  binary;
-	int     decimal;
+	int decimal;
 	bool    min = false;
 	int     ones;
-<<<<<<< HEAD
-
-=======
+	vector<int> track;// tracks the ess. imps.
     bool operator==(const term &t){return (binary == t.binary);}
- 
     
->>>>>>> 46dc039941fc08ec67857cd1ecd390cbc9cea8ce
 };
 
 int onesCounter(string t) {    //This function takes a term object and return term with updated variable ones;
@@ -27,10 +23,8 @@ int onesCounter(string t) {    //This function takes a term object and return te
 	}
 	return c;
 }
-<<<<<<< HEAD
 
-void sortVector(vector<term>& minterm) {// Will not work until ones has a true value
-=======
+
 void sortVectorAccordingToBinary(vector<term>& minterm) {
     term x;
     term y;
@@ -54,7 +48,6 @@ void removeDuplicates(vector<term> &vec){
     }
 }
 void sortVectorAccordingToNumberOfOnes(vector<term>& minterm) {// Will not work until ones has a true value
->>>>>>> 46dc039941fc08ec67857cd1ecd390cbc9cea8ce
 	term x;
 	term y;
 	for (int i = 0; i < minterm.size(); i++) { // O(n^2)
@@ -95,10 +88,11 @@ bool checkAdjacency(term t1, term t2) {
 
 term combineTerms(term t1, term t2) {
 	term temp;
-
+	temp.track.push_back(t1.decimal);
+	temp.track.push_back(t2.decimal);
 	for (int i = 0; i< t1.binary.size(); i++) {
 		if (t1.binary[i] == t2.binary[i]) {
-			//0001
+			
 			temp.binary.append(t1.binary.substr(i, 1));
 		}
 		else {
@@ -165,6 +159,7 @@ int Input(int variables, vector<term>& minterm) //User input and validation
 					process.binary = decimalToBinaryString(j, variables);
 					process.ones = onesCounter(process.binary);
 					minterm.push_back(process);
+
 				}
 			}
 			else {
@@ -190,19 +185,21 @@ void printVector(vector<term> &x)//For testing ONLY
 	for (int i = 0; i < x.size(); i++)
 	{
 		//	cout << "Decimal: " << x[i].decimal << endl;
-		cout << "Binary:" << x[i].binary << endl;
-		//	cout << "Number of ones:" << x[i].ones << endl;
+		cout << "Binary:" << x[i].binary << "\t\t\t";
+		for (int j = 0; j < x[i].track.size(); j++)
+			cout << x[i].track[j] << ", "; cout << endl; //Prints track vector
+
 		//	cout << "Minterm: " << x[i].min << endl;
 		//cout << "" <<  << endl;
 	}
 }
 
-vector<term> Adjacency(vector<term> minterm, int variables)//Takes the Vector, check adjacency
+vector<term> Adjacency(vector<term> &minterm, int variables)//Takes the Vector, check adjacency
 {
 	vector<term>A;
 	vector<term>B;
 	vector<term>prime;
-
+	removeDuplicates(minterm);
 	for (int i = 0; i < minterm.size(); i++)	// count binnary in the new implicants
 		minterm[i].ones = onesCounter(minterm[i].binary);
 
@@ -223,6 +220,8 @@ vector<term> Adjacency(vector<term> minterm, int variables)//Takes the Vector, c
 		A.clear();
 		B.clear();
 	}
+
+	removeDuplicates(prime);
 	printVector(prime);
 	return prime;
 }
@@ -242,7 +241,6 @@ int main()
 
 	for (int i = 0; i<variables - 2; i++)	//Any other time I call my PrimeImplicants and work on it
 		PrimeImplicants = Adjacency(PrimeImplicants, variables);
-
 	printVector(PrimeImplicants);
 
 	system("pause");
