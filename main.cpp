@@ -110,7 +110,6 @@ void Print(int total, vector<term>& minterm)
 	}
 }
 
-<<<<<<< HEAD
 void printVector(vector<term> &x)//For testing ONLY
 {
 	cout << "Vector Size = " << x.size() << endl;
@@ -123,7 +122,7 @@ void printVector(vector<term> &x)//For testing ONLY
 		//cout << "" <<  << endl;
 	}
 }
-void Adjacency(vector<term> &minterm, int variables,int total)//Takes the Vector, check adjacency
+void Adjacency(vector<term> &minterm, int variables, int total)//Takes the Vector, check adjacency
 {
 	vector<term>A;
 	vector<term>B;
@@ -132,7 +131,7 @@ void Adjacency(vector<term> &minterm, int variables,int total)//Takes the Vector
 		for (int j = 0; j < total; j++)
 		{
 			if (minterm[j].ones == i)
-				A.push_back(minterm[j]) ; //Not Changing the Minterm
+				A.push_back(minterm[j]); //Not Changing the Minterm
 			else if (minterm[j].ones == i + 1)
 				B.push_back(minterm[j]);
 		}
@@ -149,24 +148,8 @@ void Adjacency(vector<term> &minterm, int variables,int total)//Takes the Vector
 		A.clear();
 		B.clear();
 	}
+}
 
-	
-	
-=======
-//void Adjacency(vector<term> &minterm, int variables,int total)//Takes the Vector, check adjacency
-//{
-//    vector<term>A;
-//    vector<term>B;
-//    term process;
-//    for (int i = 0; i < variables - 1; i++)
-//    {
-//        for (int j = 0; j < total; j++)
-//            if (minterm[j].ones == i)
-//                A.push_back = minterm[j].decimal;
-//            else if (minterm[j].ones == i + 1)
-//                B.push_back = minterm[j].decimal;
-//    }
-//}
 
 bool checkAdjacency(term t1, term t2){
     int c = 0;
@@ -176,7 +159,7 @@ bool checkAdjacency(term t1, term t2){
         }
     }
     return (c == 1);
->>>>>>> ee0a1d85f8e2994b8c7bfb8fd5c1c5af1fed682d
+//>>>>>>> ee0a1d85f8e2994b8c7bfb8fd5c1c5af1fed682d
 }
 
 int main()
@@ -190,22 +173,22 @@ int main()
 
 	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 	Adjacency(minterm, variables,totalTerms);
 
 //#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__ 
-=======
+//=======
 
 	//Ajacencey(minterm, variables,totalTerms);
 
     
     
     
-#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__
->>>>>>> ee0a1d85f8e2994b8c7bfb8fd5c1c5af1fed682d
+//#ifdef _WIN64       //Exclude if TARGET_OS_MAC or __linux__
+//>>>>>>> ee0a1d85f8e2994b8c7bfb8fd5c1c5af1fed682d
     system("pause");
 //#endif
 	
     
-    return 0;
+   // return 0;
 }
