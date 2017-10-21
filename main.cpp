@@ -28,8 +28,24 @@ void printVector(vector<term> &x);
 vector<term> Adjacency(vector<term> &minterm, int variables);
 int calculateMaximumNumberOfVariables(const vector<term> &v);
 void takeInputFromUserInto(vector <term> &v);
-
-
+void adjustTerms(vector<term> &v){
+    for(int i = 0; i < v.size(); i++){
+        v[i].binary = decimalToBinaryString(v[i].decimal, calculateMaximumNumberOfVariables(v));
+        v[i].ones = onesCounter(v[i].binary);
+    }
+}
+void getImplicants(const vector<term> terms, vector<term> &implicants ){
+    for (int i = 0; i < calculateMaximumNumberOfVariables(terms);i++){
+         for (int j = 0; j < terms.size();j++){
+             for (int k = 0; k < terms.size();k++){
+                 if (checkAdjacency(terms[j], terms[k])){
+                     implicants.push_back(combineTerms(terms[j], terms[k]));
+                 }
+             }
+         }
+    }
+   
+}
 
 
 
@@ -38,44 +54,50 @@ void takeInputFromUserInto(vector <term> &v);
 
 int main()
 {
-    //          #######################DATA ENTRY ####################################
-//    cout << "Quinne McClusky Algorism Implementation\n---------------------------------------\n";
-//    vector<term> inputTerms;
+//              #######################DATA ENTRY ####################################
+    cout << "Quinne McClusky Algorism Implementation\n---------------------------------------\n";
+    vector<term> inputTerms;
+    vector<term> implicants;
+    takeInputFromUserInto(inputTerms);
+    adjustTerms(inputTerms);
+    sortVectorAccordingToNumberOfOnes(inputTerms);
+    printVector(inputTerms);
+    getImplicants(inputTerms, implicants);
+     removeDuplicates(implicants);
+    printVector(implicants);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 //
-//    takeInputFromUserInto(inputTerms);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-	int variables, totalTerms;
-	vector<term> minterm;
-	vector<term> PrimeImplicants;
-	cout << "Please enter how much variables does your function have: ";
-	cin >> variables;
-
-	totalTerms = Input(variables, minterm); //User input
-	sortVectorAccordingToNumberOfOnes(minterm);
-	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
-	PrimeImplicants = Adjacency(minterm, variables); //First call i have to call the user given
-    printFunction(PrimeImplicants);
-    for (int i = 0; i<variables - 2; i++){	//Any other time I call my PrimeImplicants and work on it
-		PrimeImplicants = Adjacency(PrimeImplicants, variables);
-        printFunction(PrimeImplicants);}
-	//printVector(PrimeImplicants);
-    printFunction(PrimeImplicants);
-
-	system("pause");
+//
+//
+//    int variables, totalTerms;
+//    vector<term> minterm;
+//    vector<term> PrimeImplicants;
+//    cout << "Please enter how much variables does your function have: ";
+//    cin >> variables;
+//
+//    totalTerms = Input(variables, minterm); //User input
+//    sortVectorAccordingToNumberOfOnes(minterm);
+//    Print(totalTerms, minterm);    //Print all the Minterms and dont cares
+//    PrimeImplicants = Adjacency(minterm, variables); //First call i have to call the user given
+//    printFunction(PrimeImplicants);
+//    for (int i = 0; i<variables - 2; i++){    //Any other time I call my PrimeImplicants and work on it
+//        PrimeImplicants = Adjacency(PrimeImplicants, variables);
+//        printFunction(PrimeImplicants);}
+//    //printVector(PrimeImplicants);
+//    printFunction(PrimeImplicants);
+//
+//    system("pause");
 
 	return 0;
 }
@@ -115,14 +137,8 @@ void takeInputFromUserInto(vector <term> &v){
         }
     }
     
-    for(int i = 0; i < v.size(); i++){
-        
-    }
+
 }
-
-
-
-
 int Input(int variables, vector<term>& minterm) //User input and validation
 {
     int totalTerms;
@@ -176,9 +192,6 @@ int Input(int variables, vector<term>& minterm) //User input and validation
     
 }
 
-
-
-
 int onesCounter(string t) {    //This function takes a term object and return term with updated variable ones;
     int c = 0;
     for (int i = 0; i < t.size(); i++) {
@@ -223,7 +236,7 @@ void removeDuplicates(vector<term> &vec){
     if (vec.size())
         for (int i = 0;i < vec.size() -1;i++)
             if (vec[i] == vec[i + 1])
-                vec.erase(vec.begin() + i);
+                vec.erase(vec.begin() + i + 1);
 }
 void sortVectorAccordingToNumberOfOnes(vector<term>& minterm) {// Will not work until ones has a true value
     term x;
@@ -287,7 +300,8 @@ term combineTerms(term t1, term t2) {
             temp.binary.append("x");
         }
     }
-    
+    temp.decimal = -1;
+    temp.ones = onesCounter(temp.binary);
     
     return temp;
 }
@@ -319,15 +333,11 @@ void Print(int total, vector<term>& minterm)
 void printVector(vector<term> &x)//For testing ONLY
 {
     cout << "Vector Size = " << x.size() << endl;
-    for (int i = 0; i < x.size(); i++)
-    {
-        //    cout << "Decimal: " << x[i].decimal << endl;
-        cout << "Binary:" << x[i].binary << "\t\t\t";
+    for (int i = 0; i < x.size(); i++){
+        cout << "m" << x[i].decimal << "\t" << " 0b" <<  x[i].binary << "\tones: " << x[i].ones;
         for (int j = 0; j < x[i].track.size(); j++)
-            cout << x[i].track[j] << ", "; cout << endl; //Prints track vector
-        
-        //    cout << "Minterm: " << x[i].min << endl;
-        //cout << "" <<  << endl;
+            cout << x[i].track[j] << (j == x[i].track.size() -1?" .":", ");
+        cout << endl;
     }
 }
 
