@@ -9,10 +9,10 @@ using namespace std;
 struct term {
 	string  binary;
 
-	bool    min = false;
+	bool    min = false; // True if it is a minterm
 	bool operator == (const term &t) { return (binary == t.binary); }
-	bool used = false;
-	int     ones;
+	bool used = false; //Check if the term is used in any type of simplifications
+	int     ones; //number of ones in each term
 	int decimal;
 
 	vector<int> track;// tracks the ess. imps.
@@ -132,7 +132,6 @@ term combineTerms(term &t1, term &t2) {
 	return temp;
 }
 
-
 vector<term> combineTwoVectors(vector<term> &A, vector<term>& B) {
 	vector<term> C;
 	term temp;
@@ -244,6 +243,53 @@ vector<term> Adjacency(vector<term> &minterm, int variables)//Takes the Vector, 
 	return prime;
 }
 
+string Letter(char j, char &c) // j= 10- , c = ABC
+{
+	string  L =  "  ";
+	switch (j)
+	{
+	case '-':	L = ""; break;
+	case '1':	L = c; break;
+	case '0':	L[0] = '`'; L[1] = c; break;
+	}
+	return L;
+}
+
+void Output(vector<term> PrimeImplicants)
+{
+	string out="";
+	char c;
+
+		//A,B,C,D,E,F,G,H,I,G,K,L,M,N,K,O,P
+	for (int i = 0; i < PrimeImplicants.size(); i++)
+	{
+		for (int j = 0 ; j <PrimeImplicants[i].binary.size(); j++)
+		{
+			switch (j)
+			{
+			case 0: c = 'A'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+			case 1:	c = 'B'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+			case 2:	c = 'C'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+			case 3: c = 'D'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+			case 4: c = 'E'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+				/*
+			case 5:
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+			case 10:
+			case 11:
+			case 12:
+			case 13:
+			*/
+			}
+		}
+		out = out + "+";
+	}
+	cout << "Output" << out;
+}
+
 int main()
 {
 	int variables, totalTerms;
@@ -261,18 +307,21 @@ int main()
 	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
 
 	used = minterm;
-
 	PrimeImplicants = Adjacency(minterm, variables); //First call have to call the user givings
 
-	for (int i = 0; i< variables - 1; i++)	//Any other tim call PrimeImplicants and work on it
-		PrimeImplicants = Adjacency(PrimeImplicants, variables);
+	for (int i = 0; i < variables; i++)	//Any other tim call PrimeImplicants and work on it
+	{
 		printVector(PrimeImplicants);
+		if(PrimeImplicants.size()!=0)
+		PrimeImplicants = Adjacency(PrimeImplicants, variables); //vector of vectors
+	}
 
 
 	removeDuplicates(used);
 
 	cout << "______Used______" << endl;
-	printVector(used);
+	//printVector(used);
+	
 
 	system("pause");
 
