@@ -307,22 +307,23 @@ void Output(vector<term> PrimeImplicants)
         {
             switch (j)
             {
-                case 0: c = 'A'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
-                case 1:    c = 'B'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
-                case 2:    c = 'C'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
-                case 3: c = 'D'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
-                case 4: c = 'E'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
-                    /*
-                     case 5:
-                     case 6:
-                     case 7:
-                     case 8:
-                     case 9:
-                     case 10:
-                     case 11:
-                     case 12:
-                     case 13:
-                     */
+                     case 0: c = 'A'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                     case 1: c = 'B'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                     case 2: c = 'C'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                     case 3: c = 'D'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                     case 4: c = 'E'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                     case 5:    c = 'F'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                     case 6:    c = 'G'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                     case 7:    c = 'H'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                     case 8:    c = 'I'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                     case 9: c = 'J'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                     case 10: c = 'K'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                     case 11: c = 'L'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                     case 12: c = 'M'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                     case 13: c = 'N'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                     case 14: c = 'O'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                     case 15: c = 'P'; out = out + Letter(PrimeImplicants[i].binary[j], c); break;
+                   
             }
         }
         out = out + "+";
@@ -341,6 +342,13 @@ int main()
     
     
     totalTerms = Input(variables, minterm); //User input
+   
+    if (minterm.size() == pow(2,variables)){
+        cout << "F = 1";
+    } else if (!minterm.size()){
+        cout << "F = 0";
+    } else {
+    
     
     EssPrimeImplicants = minterm;
     sortVectorAccordingToNumberOfOnes(minterm);
@@ -359,14 +367,14 @@ int main()
     }
     
     
-    cout << "Prime\n";
+//    cout << "Prime\n";
     printVector(PrimeImplicants);
     
     
     removeDontCares(EssPrimeImplicants);
     sortVectorAccordingToNumberOfOnes(EssPrimeImplicants);
     cout << "Ess\n";
-    printVector(EssPrimeImplicants);
+//    printVector(EssPrimeImplicants);
     
     vector <term> mintermsOnly;
     for (int i = 0; i < minterm.size(); i++)
@@ -411,18 +419,67 @@ int main()
         
         
         for (int i = 0; i < mintermsOnly.size(); i++){
-            cout << (table[i][j]?"x":"o") << "\t";
+            cout << (table[i][j]?"√":"x") << "\t";
             
         }
         cout << endl;
     }
+   
     
+//    cout << endl;
+//    //bool table [mintermsOnly.size()][EssPrimeImplicants.size()];
+//   int counter = 0;
+////    for (int j = 0; j < EssPrimeImplicants.size(); j++){
+////        for (int i = 0; i < mintermsOnly.size(); i++){
+////            if (table[i][j])
+////                counter++;
+////        }
+////        cout << EssPrimeImplicants[j].binary << ": " << counter << endl;
+////        counter = 0;
+////    }
+//
+//    vector<int> coveredByONETERM;
+//    for (int i = 0; i < mintermsOnly.size(); i++){
+//        for (int j = 0; j < EssPrimeImplicants.size(); j++){
+//
+//            if (table[i][j])
+//                counter++;
+//        }
+//        cout << mintermsOnly[i].binary << ": " << counter << endl;
+//        if (counter == 1){
+//            coveredByONETERM.push_back(EssPrimeImplicants[i]);
+//        }
+//        counter = 0;
+//    }
+//
+//    for(int i = 0; i < coveredByONETERM.size(); i++){
+//        if (i == 1){
+//
+//        }
+//    }
+//
+//
+//
+//
+////    for (int i = 0; i < mintermsOnly.size(); i++){
+////        for (int j = 0; j < EssPrimeImplicants.size(); j++){
+////            if(table[i][j]){
+////                for (int k = 0; k < mintermsOnly.size(); k++){
+////                    if (table [k][i])
+////                        counter++;
+////                }
+////
+////            }
+////        }
+////        cout << mintermsOnly[i].decimal << ":" << counter << endl;
+////        counter = 0;
+////    }
+////
+//
+//
     
-    
-    
-    
-    
-    
+     }
+    cout << endl;
     system("pause");
     
     return 0;
