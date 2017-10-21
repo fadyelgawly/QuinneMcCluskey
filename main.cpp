@@ -4,15 +4,34 @@
 #include <vector>
 using namespace std;
 
+
+/*_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_*/
 struct term {
 	string  binary;
-	int decimal;
+
 	bool    min = false;
+	bool operator == (const term &t) { return (binary == t.binary); }
+	bool used = false;
 	int     ones;
+	int decimal;
+
 	vector<int> track;// tracks the ess. imps.
-    bool operator==(const term &t){return (binary == t.binary);}
-    
 };
+vector<term> used;
+
+void printVector(vector<term> &x)//For testing ONLY
+{
+	cout << "Vector Size = " << x.size() << endl;
+	for (int i = 0; i < x.size(); i++)
+	{
+		//	cout << "Decimal: " << x[i].decimal << endl;
+		cout << "Binary:" << x[i].binary << "\t\t\t";
+		for (int j = 0; j < x[i].track.size(); j++)
+			cout << x[i].track[j] << ", ";
+		cout << endl;
+cout<<" Used: " << x[i].used << endl; //Prints track vector
+	}
+}
 
 int onesCounter(string t) {    //This function takes a term object and return term with updated variable ones;
 	int c = 0;
@@ -23,7 +42,6 @@ int onesCounter(string t) {    //This function takes a term object and return te
 	}
 	return c;
 }
-
 
 void sortVectorAccordingToBinary(vector<term>& minterm) {
     term x;
@@ -39,14 +57,17 @@ void sortVectorAccordingToBinary(vector<term>& minterm) {
         }
     }
 }
+
 void removeDuplicates(vector<term> &vec){
     sortVectorAccordingToBinary(vec);
-    for (int i = 0;i < vec.size() -1;i++){
-        if (vec[i] == vec[i + 1]){
+	if(vec.size())
+    for (int i = 0; i < vec.size()-1 ;i++)
+        if (vec[i] == vec[i + 1])
             vec.erase(vec.begin() + i);
-        }
-    }
+     
+    
 }
+
 void sortVectorAccordingToNumberOfOnes(vector<term>& minterm) {// Will not work until ones has a true value
 	term x;
 	term y;
@@ -86,45 +107,47 @@ bool checkAdjacency(term t1, term t2) {
 	return (c == 1);
 }
 
-term combineTerms(term t1, term t2) {
+term combineTerms(term &t1, term &t2) {
 	term temp;
-
 	
-	for (int i = 0; i < t1.track.size(); i++)
-	{
-		if (i == 0)
-		{
-			temp.track.push_back(t1.decimal);
-			temp.track.push_back(t2.decimal);
-		}
+
+	if (t1.track.size() == 0){
+		temp.track.push_back(t1.decimal);
+		temp.track.push_back(t2.decimal);
+	}
+
+	for (int i = 0; i < t1.track.size(); i++){
 		temp.track.push_back(t1.track[i]);
 		temp.track.push_back(t2.track[i]);
 	}
+
 	for (int i = 0; i< t1.binary.size(); i++) {
 		if (t1.binary[i] == t2.binary[i]) {
-			
 			temp.binary.append(t1.binary.substr(i, 1));
 		}
 		else {
 			temp.binary.append("x");
 		}
 	}
-
-
 	return temp;
 }
 
-vector<term> combineTwoVectors(vector<term>& A, vector<term>& B) {
+
+vector<term> combineTwoVectors(vector<term> &A, vector<term>& B) {
 	vector<term> C;
 	term temp;
 	for (int i = 0; i < A.size(); i++) {
 		for (int j = 0; j < B.size(); j++) {
 			if (checkAdjacency(A[i], B[j])) {
-				temp = combineTerms(A[i], B[j]);        //FLAGS CAN BE ADDED HERE
+				 used.push_back(A[i]);
+				used.push_back(B[j]);
+				temp = combineTerms(A[i], B[j]);   										
 				C.push_back(temp);
 			}
+			
 		}
 	}
+
 	return C;
 }
 
@@ -134,7 +157,6 @@ int Input(int variables, vector<term>& minterm) //User input and validation
 	int total = pow(2, variables);
 	term process;
 	/*------------------------------Minterms Entery-------------------------------*/
-
 	cout << "Choose the minterms between 0  and " << total - 1 << " and enter -1 to end" << endl;
 	int i = 0;
 	while (i != -1)
@@ -147,7 +169,6 @@ int Input(int variables, vector<term>& minterm) //User input and validation
 				process.binary = decimalToBinaryString(i, variables);
 				process.ones = onesCounter(process.binary);
 				minterm.push_back(process);
-
 			}
 			else {
 				cout << "out of boundries try again" << endl;
@@ -189,27 +210,11 @@ void Print(int total, vector<term>& minterm)
 	}
 }
 
-void printVector(vector<term> &x)//For testing ONLY
-{
-	cout << "Vector Size = " << x.size() << endl;
-	for (int i = 0; i < x.size(); i++)
-	{
-		//	cout << "Decimal: " << x[i].decimal << endl;
-		cout << "Binary:" << x[i].binary << "\t\t\t";
-		for (int j = 0; j < x[i].track.size(); j++)
-			cout << x[i].track[j] << ", "; cout << endl; //Prints track vector
-
-		//	cout << "Minterm: " << x[i].min << endl;
-		//cout << "" <<  << endl;
-	}
-}
-
 vector<term> Adjacency(vector<term> &minterm, int variables)//Takes the Vector, check adjacency
 {
 	vector<term>A;
 	vector<term>B;
 	vector<term>prime;
-	removeDuplicates(minterm);
 	for (int i = 0; i < minterm.size(); i++)	// count binnary in the new implicants
 		minterm[i].ones = onesCounter(minterm[i].binary);
 
@@ -222,8 +227,12 @@ vector<term> Adjacency(vector<term> &minterm, int variables)//Takes the Vector, 
 			else if (minterm[j].ones == i + 1)
 				B.push_back(minterm[j]);
 		}
+		
+
 		vector <term> AB;
 		AB = combineTwoVectors(A, B);
+
+		
 		for (int i = 0; i < AB.size(); i++)
 			prime.push_back(AB[i]);
 
@@ -232,7 +241,6 @@ vector<term> Adjacency(vector<term> &minterm, int variables)//Takes the Vector, 
 	}
 
 	removeDuplicates(prime);
-	printVector(prime);
 	return prime;
 }
 
@@ -241,17 +249,30 @@ int main()
 	int variables, totalTerms;
 	vector<term> minterm;
 	vector<term> PrimeImplicants;
+
 	cout << "Please enter how much variables does your function have: ";
 	cin >> variables;
 
+	
 	totalTerms = Input(variables, minterm); //User input
-	sortVectorAccordingToNumberOfOnes(minterm);
-	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
-	PrimeImplicants = Adjacency(minterm, variables); //First call i have to call the user given
 
-	for (int i = 0; i<variables - 2; i++)	//Any other time I call my PrimeImplicants and work on it
+	sortVectorAccordingToNumberOfOnes(minterm);
+
+	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
+
+	used = minterm;
+
+	PrimeImplicants = Adjacency(minterm, variables); //First call have to call the user givings
+
+	for (int i = 0; i< variables - 1; i++)	//Any other tim call PrimeImplicants and work on it
 		PrimeImplicants = Adjacency(PrimeImplicants, variables);
-	printVector(PrimeImplicants);
+		printVector(PrimeImplicants);
+
+
+	removeDuplicates(used);
+
+	cout << "______Used______" << endl;
+	printVector(used);
 
 	system("pause");
 
