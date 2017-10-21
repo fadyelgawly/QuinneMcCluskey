@@ -17,9 +17,10 @@ struct term {
 
 	vector<int> track;// tracks the ess. imps.
 };
-vector<term> used;
 
-void printVector(vector<term> &x)//For testing ONLY
+vector<term>  EssPrimeImplicants;
+
+void printVector(vector<term> &x) //For testing ONLY
 {
 	cout << "Vector Size = " << x.size() << endl;
 	for (int i = 0; i < x.size(); i++)
@@ -29,7 +30,6 @@ void printVector(vector<term> &x)//For testing ONLY
 		for (int j = 0; j < x[i].track.size(); j++)
 			cout << x[i].track[j] << ", ";
 		cout << endl;
-cout<<" Used: " << x[i].used << endl; //Prints track vector
 	}
 }
 
@@ -68,6 +68,15 @@ void removeDuplicates(vector<term> &vec){
     
 }
 
+void removeDontCares(vector<term> &vec) {
+	removeDuplicates(vec);
+	if (vec.size())
+		for (int i = 0; i < vec.size(); i++)
+			if (!vec[i].min)
+				vec.erase(vec.begin() + i);
+	removeDuplicates(vec);
+}
+
 void sortVectorAccordingToNumberOfOnes(vector<term>& minterm) {// Will not work until ones has a true value
 	term x;
 	term y;
@@ -104,6 +113,12 @@ bool checkAdjacency(term t1, term t2) {
 			c++;                            //0000
 		}
 	}
+	if (c == 1) {
+		for (int i = 0; i < EssPrimeImplicants.size(); i++) {
+			if ((EssPrimeImplicants[i] == t1 || EssPrimeImplicants[i] == t2))
+				EssPrimeImplicants.erase(EssPrimeImplicants.begin() + i);
+		}
+	} 
 	return (c == 1);
 }
 
@@ -129,6 +144,9 @@ term combineTerms(term &t1, term &t2) {
 			temp.binary.append("x");
 		}
 	}
+	if (t1.min || t2.min)
+		temp.min = true;
+	EssPrimeImplicants.push_back(temp);
 	return temp;
 }
 
@@ -138,8 +156,7 @@ vector<term> combineTwoVectors(vector<term> &A, vector<term>& B) {
 	for (int i = 0; i < A.size(); i++) {
 		for (int j = 0; j < B.size(); j++) {
 			if (checkAdjacency(A[i], B[j])) {
-				 used.push_back(A[i]);
-				used.push_back(B[j]);
+				
 				temp = combineTerms(A[i], B[j]);   										
 				C.push_back(temp);
 			}
@@ -231,9 +248,17 @@ vector<term> Adjacency(vector<term> &minterm, int variables)//Takes the Vector, 
 		vector <term> AB;
 		AB = combineTwoVectors(A, B);
 
+		for (int i = 0; i < AB.size(); i++)
+			EssPrimeImplicants.push_back(AB[i]);
+
+
+
+
 		
 		for (int i = 0; i < AB.size(); i++)
 			prime.push_back(AB[i]);
+
+		
 
 		A.clear();
 		B.clear();
@@ -302,26 +327,33 @@ int main()
 	
 	totalTerms = Input(variables, minterm); //User input
 
+	EssPrimeImplicants = minterm;
 	sortVectorAccordingToNumberOfOnes(minterm);
 
 	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
-
-	used = minterm;
+	
 	PrimeImplicants = Adjacency(minterm, variables); //First call have to call the user givings
 
-	for (int i = 0; i < variables; i++)	//Any other tim call PrimeImplicants and work on it
+	vector<term> test;
+
+	while (1)
 	{
-		printVector(PrimeImplicants);
-		if(PrimeImplicants.size()!=0)
-		PrimeImplicants = Adjacency(PrimeImplicants, variables); //vector of vectors
+		test = Adjacency(PrimeImplicants, variables); //vector of vectors
+		if (!test.size()) break;
+		PrimeImplicants = test;
 	}
 
 
-	removeDuplicates(used);
+	cout << "Prime\n";
+	printVector(PrimeImplicants);
 
-	cout << "______Used______" << endl;
-	//printVector(used);
-	
+
+	removeDontCares(EssPrimeImplicants);
+	cout << "Ess\n";
+	printVector(EssPrimeImplicants);
+
+
+	Output(PrimeImplicants);
 
 	system("pause");
 
