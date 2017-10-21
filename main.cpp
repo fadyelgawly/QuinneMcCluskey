@@ -4,6 +4,8 @@
 #include <vector>
 using namespace std;
 
+
+
 struct term {
 	string  binary;
 	int decimal;
@@ -13,6 +15,7 @@ struct term {
     bool operator==(const term &t){return (binary == t.binary);}
     
 };
+vector<term> usedTerm;
 
 int onesCounter(string t) {    //This function takes a term object and return term with updated variable ones;
 	int c = 0;
@@ -83,6 +86,19 @@ bool checkAdjacency(term t1, term t2) {
 			c++;                            //0000
 		}
 	}
+    if (c == 1){
+        for(int i = 0; i < usedTerm.size(); i++){
+            if (usedTerm[i] == t1){
+                usedTerm.erase(usedTerm.begin() + i);
+            }
+            if (usedTerm[i] == t2){
+                usedTerm.erase(usedTerm.begin() + i);
+            }
+        }
+        
+        
+        
+    }
 	return (c == 1);
 }
 
@@ -245,6 +261,7 @@ int main()
 	cin >> variables;
 
 	totalTerms = Input(variables, minterm); //User input
+    usedTerm = minterm;
 	sortVectorAccordingToNumberOfOnes(minterm);
 	Print(totalTerms, minterm);	//Print all the Minterms and dont cares
 	PrimeImplicants = Adjacency(minterm, variables); //First call i have to call the user given
@@ -254,7 +271,10 @@ int main()
 	printVector(PrimeImplicants);
 
 	system("pause");
+    
 
+    printVector(usedTerm);
+    
 	return 0;
 }
 
