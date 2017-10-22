@@ -424,11 +424,31 @@ int main()
         }
         cout << endl;
     }
+
+
+		PrimeImplicants.clear();
+        for (int i = 0; i< mintermsOnly.size() ; i++)    // m0 m1 m3 etc.. 3D LooP
+        {
+            int count = 0;
+            int index;
+            for (int j = 0; j < EssPrimeImplicants.size(); j++) // x001x
+            {
+                for (int k = 0; k < EssPrimeImplicants[j].track.size(); k++) //3,4,5,2
+                {if (mintermsOnly[i].decimal == EssPrimeImplicants[j].track[k]){
+                    //    PrimeImplicants[j].min = true;
+                    count++;
+                    index=j;
+                }
+                }
+                
+            }
+            if (count == 1) PrimeImplicants.push_back(EssPrimeImplicants[index]);
+        }
    
-    
-//    cout << endl;
-//    //bool table [mintermsOnly.size()][EssPrimeImplicants.size()];
-//   int counter = 0;
+//
+////    cout << endl;
+////    //bool table [mintermsOnly.size()][EssPrimeImplicants.size()];
+////   int counter = 0;
 ////    for (int j = 0; j < EssPrimeImplicants.size(); j++){
 ////        for (int i = 0; i < mintermsOnly.size(); i++){
 ////            if (table[i][j])
@@ -437,48 +457,73 @@ int main()
 ////        cout << EssPrimeImplicants[j].binary << ": " << counter << endl;
 ////        counter = 0;
 ////    }
-//
-//    vector<int> coveredByONETERM;
-//    for (int i = 0; i < mintermsOnly.size(); i++){
-//        for (int j = 0; j < EssPrimeImplicants.size(); j++){
-//
-//            if (table[i][j])
-//                counter++;
-//        }
-//        cout << mintermsOnly[i].binary << ": " << counter << endl;
-//        if (counter == 1){
-//            coveredByONETERM.push_back(EssPrimeImplicants[i]);
-//        }
-//        counter = 0;
-//    }
-//
-//    for(int i = 0; i < coveredByONETERM.size(); i++){
-//        if (i == 1){
-//
-//        }
-//    }
-//
-//
-//
-//
+////
+////    vector<int> coveredByONETERM;
 ////    for (int i = 0; i < mintermsOnly.size(); i++){
 ////        for (int j = 0; j < EssPrimeImplicants.size(); j++){
-////            if(table[i][j]){
-////                for (int k = 0; k < mintermsOnly.size(); k++){
-////                    if (table [k][i])
-////                        counter++;
-////                }
 ////
-////            }
+////            if (table[i][j])
+////                counter++;
 ////        }
-////        cout << mintermsOnly[i].decimal << ":" << counter << endl;
+////        cout << mintermsOnly[i].binary << ": " << counter << endl;
+////        if (counter == 1){
+////          //  coveredByONETERM.push_back(EssPrimeImplicants[i]);
+////        }
 ////        counter = 0;
 ////    }
 ////
+////    for(int i = 0; i < coveredByONETERM.size(); i++){
+////        if (i == 1){
+////
+////        }
+////    }
+//
+//        vector<int> indexOfMintermCoveredByOneTerm;
+//        vector<term> EssPrimeImplicantsCopy;
+//        int counter = 0;
+//        int j;
+//        for (int i = 0; i < mintermsOnly.size(); i++){
+//            for (j = 0; j < EssPrimeImplicants.size(); j++){
+//                if(table[i][j]){
+//                    for (int k = 0; k < mintermsOnly.size(); k++){
+//                        if (table [k][i])
+//                            counter++;
 //
 //
+//                }
+//            }
+//        }
+//
+//        cout << mintermsOnly[i].decimal << ":" << counter << endl;
+//        if ( mintermsOnly[i].decimal == 1)
+//            indexOfMintermCoveredByOneTerm.push_back(i);
+//        counter = 0;
+//        }
+//
+//
+//        for (int i = 0; i < indexOfMintermCoveredByOneTerm.size(); i++){
+//            for (j = 0; j < EssPrimeImplicants.size(); j++){
+//                if (table[j][indexOfMintermCoveredByOneTerm[i]])
+//                    EssPrimeImplicantsCopy.push_back(EssPrimeImplicantsCopy[j]);
+//            }
+//
+//        }
+//
+//4
+//
+//
+        removeDuplicates(PrimeImplicants);
+        cout << "Essential Prime Implicants\n";
+        for (int i = 0; i < PrimeImplicants.size(); i++){
+            removeDuplicates(PrimeImplicants);
+
+            cout << PrimeImplicants[i].binary << endl;
+        }
+        
+
     
-     }
+    }
+    
     cout << endl;
     system("pause");
     
